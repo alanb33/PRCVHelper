@@ -4,11 +4,12 @@
 
 int is_arg_count_valid(const int argc);
 int is_filename_valid(const char* filename);
+FILE* open_file(const char* filename);
 void read_file(FILE* to_read);
 
 int main(int argc, char *argv[]) {
     /* confirm we have good arguments */
-    if (!are_arguments_valid(argc)) {
+    if (!is_arg_count_valid(argc)) {
         printf("Invalid arguments provided.\n");
         return 1;
     }
@@ -23,7 +24,7 @@ int main(int argc, char *argv[]) {
     /* make sure we can open the file */
     char local_filename[50] = "./";
     strcat(local_filename, filename);
-    FILE* to_read = fopen(local_filename, 'r');
+    FILE* to_read = open_file(local_filename);
     if (!to_read) {
         printf("Error reading file %s.\n", filename);
         return 1;
@@ -49,6 +50,11 @@ int is_filename_valid(const char* filename) {
         }
     }
     return 1;
+}
+
+/* simple file open */
+FILE* open_file(const char* filename) {
+    return fopen(filename, "r");
 }
 
 /* read a valid file */
